@@ -966,6 +966,9 @@ public class ExprProcessor implements CodeConstants {
     boolean doCastNull = (castNull.cast && rightType.type == CodeType.NULL && !UNDEFINED_TYPE_STRING.equals(getTypeName(leftType)));
     boolean doCastNarrowing = (castNarrowing && isIntConstant(exprent) && isNarrowedIntType(leftType));
     boolean doCastGenerics = doGenericTypesCast(exprent, leftType, rightType);
+    if (doCast && (GenericType.isAssignable(rightType, leftType, exprent.getNamedGenerics()))) {
+      doCast = false;
+    }
 
     boolean cast = castAlways || doCast || doCastNull || doCastNarrowing || doCastGenerics;
 

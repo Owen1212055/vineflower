@@ -7,6 +7,7 @@ import java.util.Map;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.java.decompiler.code.CodeConstants;
+import org.jetbrains.java.decompiler.struct.gen.generics.GenericType;
 import org.jetbrains.java.decompiler.util.InterpreterUtil;
 
 public class VarType {
@@ -232,7 +233,14 @@ public class VarType {
     }
 
     if (val.arrayDim > 0) {
-      return this.equals(VARTYPE_OBJECT);
+      if (
+              this.type == CodeType.OBJECT && val.type == CodeType.OBJECT ||
+                      this.type == CodeType.GENVAR && val.type == CodeType.OBJECT
+      ) {
+        return this.decreaseArrayDim().isStrictSuperset(val.decreaseArrayDim());
+      } else {
+        return this.equals(VARTYPE_OBJECT);
+      }
     }
     else if (arrayDim > 0) {
       return (valType == CodeType.NULL);

@@ -261,6 +261,22 @@ public class FunctionExprent extends Exprent {
           List<VarType> finalTypes = types;
           if (cast.stream().allMatch(castType -> finalTypes.stream().anyMatch(type -> DecompilerContext.getStructContext().instanceOf(type.value, castType.value)))) {
             this.needsCast = false;
+            // Compute the type that fits this type
+            VarType computed = finalTypes.stream()
+                    .filter(type -> cast.stream().allMatch(castType -> DecompilerContext.getStructContext().instanceOf(type.value, castType.value)))
+                    .findFirst()
+                    .orElse(null);
+
+            if (computed.isGeneric() && GenericType.areArgumentsAssignable(computed, upperBound, names) && !computed.equals(this.getExprType())) {
+              right = upperBound;
+            }
+
+            if (arrayDim > 0) {
+              right = right.resizeArrayDim(arrayDim);
+            }
+
+
+            return right;
           }
         } else {
             this.needsCast = right.type == CodeType.NULL || !DecompilerContext.getStructContext().instanceOf(right.value, upperBound.value) || !areGenericTypesSame(right, upperBound);

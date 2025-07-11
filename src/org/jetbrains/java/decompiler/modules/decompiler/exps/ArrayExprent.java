@@ -42,7 +42,7 @@ public class ArrayExprent extends Exprent {
 
   @Override
   public VarType getInferredExprType(VarType upperBound) {
-    VarType exprType = array.getInferredExprType(upperBound);
+    VarType exprType = array.getInferredExprType(upperBound == null ? null : upperBound.resizeArrayDim(array.getExprType().arrayDim));
     if (exprType.equals(VarType.VARTYPE_NULL)) {
       return hardType;
     }

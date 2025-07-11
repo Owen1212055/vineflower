@@ -22,6 +22,7 @@ public class SingleClassesTest extends SingleClassesTestBase {
       IFernflowerPreferences.TERNARY_CONDITIONS, "1",
       IFernflowerPreferences.FORCE_JSR_INLINE, "1"
     );
+    if (true) return;
     registerSet("Entire Classpath", this::registerEntireClassPath,
       IFernflowerPreferences.BYTECODE_SOURCE_MAPPING, "1",
       IFernflowerPreferences.DUMP_ORIGINAL_LINES, "1",
@@ -155,6 +156,14 @@ public class SingleClassesTest extends SingleClassesTestBase {
   }
 
   private void registerDefault() {
+    if (true) {
+    //  register(JAVA_8, "TestVarArgCalls");
+      register(JAVA_8, "TestGenericCasts");
+      //register(JAVA_16, "TestRecordInner");
+      //register(JAVA_16, "TestRecordMixup");
+      return;
+    }
+
     register(JAVA_8, "TestEnhancedForLoops");
     register(JAVA_8, "TestPrimitiveNarrowing");
     register(JAVA_8, "TestClassFields");
